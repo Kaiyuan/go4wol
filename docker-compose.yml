@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  go4wol:
+    build: .
+    container_name: go4wol
+    restart: unless-stopped
+    ports:
+      - "52133:52133"
+    environment:
+      - PORT=52133
+      - TZ=Asia/Shanghai
+    network_mode: host
+    # 给容器特权以发送网络广播包（仅在必要时使用）
+    # privileged: true
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.wol.rule=Host(`wol.local`)"
+      - "traefik.http.services.wol.loadbalancer.server.port=52133"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    image: kaiyuan/go4wol:latest
+
+#networks:
+#  go4wol-network:
+#    driver: bridge
+#    driver_opts:
+#      com.docker.network.bridge.enable_icc: "true"
+#      com.docker.network.bridge.enable_ip_masquerade: "true"
