@@ -14,6 +14,37 @@
 
 ## 快速开始
 
+### Docker Compost
+**群晖直接在项目中新增一个项目即可**
+```
+version: '3.8'
+
+services:
+  go4wol:
+    build: .
+    container_name: go4wol
+    restart: unless-stopped
+    ports:
+      - "52133:52133"
+    environment:
+      - PORT=52133
+      - TZ=Asia/Shanghai
+    network_mode: host
+    # 给容器特权以发送网络广播包（仅在必要时使用）
+    # privileged: true
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.wol.rule=Host(`wol.local`)"
+      - "traefik.http.services.wol.loadbalancer.server.port=52133"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    image: kaiyuan/go4wol:latest
+```
+
 ### 1. 准备文件
 
 将以下文件保存到同一目录：
