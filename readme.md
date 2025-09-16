@@ -42,7 +42,7 @@ services:
         max-size: "10m"
         max-file: "3"
 
-    image: kaiyuan/go4wol:latest
+    image: kaiyuan/go4wol:1.0
 ```
 
 ### 1. 准备文件
