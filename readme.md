@@ -172,8 +172,8 @@ wakeDevice('AA:BB:CC:DD:EE:FF')
 ssh admin@your-synology-ip
 
 # 创建项目目录
-mkdir -p /volume1/docker/wol-service
-cd /volume1/docker/wol-service
+mkdir -p /volume1/docker/go4wol
+cd /volume1/docker/go4wol
 
 # 上传文件后执行部署
 chmod +x deploy.sh
@@ -200,12 +200,12 @@ chmod +x deploy.sh
 
 ```bash
 # 查看服务状态
-docker ps | grep wol-service
+docker ps | grep go4wol
 
 # 查看日志
 ./deploy.sh logs
 # 或者
-docker logs -f wol-service
+docker logs -f go4wol
 
 # 重启服务
 ./deploy.sh restart
@@ -236,13 +236,13 @@ docker logs -f wol-service
 
 ```bash
 # 检查容器状态
-docker ps -a | grep wol-service
+docker ps -a | grep go4wol
 
 # 查看详细日志
-docker logs wol-service
+docker logs go4wol
 
 # 进入容器调试
-docker exec -it wol-service sh
+docker exec -it go4wol sh
 
 # 测试网络连接
 curl http://localhost:52133/health
