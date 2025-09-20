@@ -49,7 +49,7 @@ services:
         max-size: "10m"
         max-file: "3"
 
-    image: kaiyuan/go4wol:labels
+    image: kaiyuan/go4wol:latest
 
 # 如果不能使用host网络模式，请使用以下配置
 # services:

@@ -11,7 +11,7 @@ services:
       - "52133:52133"  # 在host网络模式下这行会被忽略，但保留以备切换到bridge模式
     environment:
       - PORT=52133
-      - ADMIN_PASSWORD=your_secure_password  # 请修改为安全的密码
+      - ADMIN_PASSWORD=admin123  # 请修改为安全的密码
       - TZ=Asia/Shanghai
     volumes:
       - ./data:/data:rw  # 挂载数据目录到宿主机，确保读写权限
@@ -26,7 +26,7 @@ services:
         max-size: "10m"
         max-file: "3"
 
-    image: kaiyuan/go4wol:labels
+    image: kaiyuan/go4wol:latest
 
 # 如果不能使用host网络模式，请使用以下配置
 # services:
