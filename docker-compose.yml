@@ -5,29 +5,45 @@ services:
     build: .
     container_name: go4wol
     restart: unless-stopped
+    network_mode: host  # 使用host网络模式，确保能够发送广播包
+    # 注意：使用host网络模式时，ports映射会被忽略
     ports:
-      - "52133:52133"
+      - "52133:52133"  # 在host网络模式下这行会被忽略，但保留以备切换到bridge模式
     environment:
       - PORT=52133
+      - ADMIN_PASSWORD=your_secure_password  # 请修改为安全的密码
       - TZ=Asia/Shanghai
-    network_mode: host
-    # 给容器特权以发送网络广播包（仅在必要时使用）
-    # privileged: true
+    volumes:
+      - ./data:/data:rw  # 挂载数据目录到宿主机，确保读写权限
+    user: "1000:1000"  # 使用与容器内相同的用户ID
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.wol.rule=Host(`wol.local`)"
-      - "traefik.http.services.wol.loadbalancer.server.port=52133"
+      - "traefik.http.routers.go4wol.rule=Host(`go4wol.local`)"
+      - "traefik.http.services.go4wol.loadbalancer.server.port=52133"
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "3"
 
-    image: kaiyuan/go4wol:1.0
-
-#networks:
-#  go4wol-network:
-#    driver: bridge
-#    driver_opts:
-#      com.docker.network.bridge.enable_icc: "true"
-#      com.docker.network.bridge.enable_ip_masquerade: "true"
+# 如果不能使用host网络模式，请使用以下配置
+# services:
+#   go4wol:
+#     build: .
+#     container_name: go4wol
+#     restart: unless-stopped
+#     ports:
+#       - "52133:52133"
+#     environment:
+#       - PORT=52133
+#       - ADMIN_PASSWORD=your_secure_password
+#       - TZ=Asia/Shanghai
+#     volumes:
+#       - ./data:/data
+#     networks:
+#       - go4wol-network
+#     privileged: true  # 可能需要特权模式来发送广播包
+# 
+# networks:
+#   go4wol-network:
+#     driver: bridge

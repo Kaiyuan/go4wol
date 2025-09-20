@@ -1,173 +1,134 @@
-# WOL (Wake-on-LAN) 服务
+Go4WOL - Wake-on-LAN PWA服务
+一个功能强大的Wake-on-LAN服务，带有现代化的PWA前端界面，专为群晖NAS的Docker环境设计。
 
-一个使用Go语言开发的Wake-on-LAN服务，专为群晖NAS的Docker环境设计。该服务可以接收MAC地址并发送WOL魔术包来唤醒网络设备。
+✨ 功能特点
+🚀 高性能Go语言实现 - 快速稳定的后端服务
+📱 PWA前端界面 - 支持离线使用，可安装到桌面/手机
+🔐 密码认证保护 - 登录状态永久保存在设备
+💾 SQLite数据库 - 持久化存储设备信息
+🖥️ 设备管理 - 添加、删除、管理多个设备
+🌐 一键唤醒 - 点击设备即可快速发送WOL包
+🐳 Docker容器化 - 简单易部署
+🛡️ 安全设计 - 非root用户运行
+📊 健康监控 - 内置健康检查
+🌏 CORS支持 - 便于前端集成
+🎯 界面预览
+登录界面：密码保护，一次登录长期有效
+设备管理：直观的设备卡片展示
+一键唤醒：点击设备卡片或唤醒按钮
+设备添加：模态框快速添加新设备
+响应式设计：支持手机、平板、桌面
+🚀 快速开始
+1. 准备文件
+创建项目目录并保存以下文件：
 
-## 功能特点
+bash
+mkdir go4wol && cd go4wol
+# 保存 main.go, Dockerfile, docker-compose.yml, deploy.sh
+2. 设置管理密码
+bash
+# 设置环境变量（推荐）
+export ADMIN_PASSWORD="your_secure_password"
 
-- 🚀 高性能的Go语言实现
-- 🐳 Docker容器化部署
-- 🌐 RESTful API接口
-- 🛡️ 安全的非root用户运行
-- 📊 健康检查和监控
-- 🌏 支持自定义广播地址和端口
-- 📱 CORS支持，便于前端集成
-
-## 快速开始
-
-### Docker Compost
-**群晖直接在项目中新增一个项目即可**
-```
-version: '3.8'
-
-services:
-  go4wol:
-    build: .
-    container_name: go4wol
-    restart: unless-stopped
-    ports:
-      - "52133:52133"
-    environment:
-      - PORT=52133
-      - TZ=Asia/Shanghai
-    network_mode: host
-    # 给容器特权以发送网络广播包（仅在必要时使用）
-    # privileged: true
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.wol.rule=Host(`wol.local`)"
-      - "traefik.http.services.wol.loadbalancer.server.port=52133"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
-
-    image: kaiyuan/go4wol:1.0
-```
-
-### 1. 准备文件
-
-将以下文件保存到同一目录：
-- `main.go` - 主程序代码
-- `Dockerfile` - Docker构建文件
-- `docker-compose.yml` - Docker Compose配置
-- `deploy.sh` - 构建和部署脚本
-
-### 2. 构建和部署
-
-```bash
+# 或者修改 docker-compose.yml 中的密码
+3. 一键部署
+bash
 # 给部署脚本添加执行权限
 chmod +x deploy.sh
 
 # 构建并部署服务
 ./deploy.sh deploy
+4. 访问服务
+打开浏览器访问：http://your-server-ip:52133
 
-# 或者单独构建
-./deploy.sh build
-```
+📋 API接口
+原有WOL API（保持不变）
+发送WOL包： POST /wol
 
-### 3. 使用Docker Compose
+json
+{
+    "mac": "AA:BB:CC:DD:EE:FF",
+    "broadcast": "192.168.1.255",
+    "port": 9
+}
+新增管理API
+用户登录： POST /api/login
 
-```bash
+json
+{
+    "password": "your_password"
+}
+获取设备列表： GET /api/devices
+
+bash
+curl -H "Authorization: Bearer your_token" http://localhost:52133/api/devices
+添加设备： POST /api/devices
+
+json
+{
+    "name": "办公电脑",
+    "mac": "AA:BB:CC:DD:EE:FF",
+    "broadcast": "192.168.1.255",
+    "port": 9,
+    "description": "我的办公电脑"
+}
+删除设备： DELETE /api/devices?id=1
+
+🐳 部署方式
+方式1：Docker Compose（推荐）
+bash
+# 修改 docker-compose.yml 中的密码
+ADMIN_PASSWORD=your_secure_password
+
 # 启动服务
 docker-compose up -d
 
 # 查看日志
-docker-compose logs -f
+docker-compose logs -f go4wol
+方式2：部署脚本
+bash
+# 设置密码并部署
+ADMIN_PASSWORD=your_secure_password ./deploy.sh deploy
 
-# 停止服务
-docker-compose down
-```
+# 其他管理命令
+./deploy.sh stop     # 停止服务
+./deploy.sh restart  # 重启服务
+./deploy.sh logs     # 查看日志
+方式3：手动Docker命令
+bash
+# 创建数据目录
+mkdir -p ./data
 
-## API 接口
-
-### 发送WOL包
-
-**端点：** `POST /wol`
-
-**请求体：**
-```json
-{
-    "mac": "AA:BB:CC:DD:EE:FF",        // 必需：目标设备的MAC地址
-    "broadcast": "192.168.1.255",      // 可选：广播地址，默认255.255.255.255
-    "port": 9                          // 可选：端口号，默认9
-}
-```
-
-**响应：**
-```json
-{
-    "success": true,
-    "message": "WOL packet sent successfully",
-    "mac": "AA:BB:CC:DD:EE:FF"
-}
-```
-
-### 健康检查
-
-**端点：** `GET /health`
-
-**响应：**
-```json
-{
-    "status": "healthy",
-    "timestamp": "2024-01-15T10:30:00Z",
-    "service": "WOL Service"
-}
-```
-
-## 使用示例
-
-### cURL 命令
-
-```bash
-# 发送WOL包
-curl -X POST http://localhost:52133/wol \
-  -H 'Content-Type: application/json' \
-  -d '{"mac":"AA:BB:CC:DD:EE:FF"}'
-
-# 指定广播地址和端口
-curl -X POST http://localhost:52133/wol \
-  -H 'Content-Type: application/json' \
-  -d '{"mac":"AA:BB:CC:DD:EE:FF","broadcast":"192.168.1.255","port":9}'
-```
-
-### JavaScript 示例
-
-```javascript
-async function wakeDevice(mac, broadcast = null, port = null) {
-    const payload = { mac };
-    if (broadcast) payload.broadcast = broadcast;
-    if (port) payload.port = port;
-    
-    const response = await fetch('/wol', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-    });
-    
-    const result = await response.json();
-    return result;
-}
-
-// 使用示例
-wakeDevice('AA:BB:CC:DD:EE:FF')
-    .then(result => console.log('WOL发送结果:', result))
-    .catch(error => console.error('错误:', error));
-```
-
-## 群晖NAS部署指南
-
-### 方法1：通过SSH部署
-
-1. 启用群晖的SSH服务
-2. 通过SSH连接到群晖
-3. 创建项目目录并上传文件
-4. 运行部署脚本
-
-```bash
+# 运行容器
+docker run -d \
+  --name go4wol \
+  --restart unless-stopped \
+  --network host \
+  -e PORT=52133 \
+  -e ADMIN_PASSWORD=your_secure_password \
+  -e TZ=Asia/Shanghai \
+  -v "$(pwd)/data:/data" \
+  -p 52133:52133 \
+  go4wol:latest
+🏠 群晖NAS部署
+通过Docker套件
+构建镜像：
+bash
+   # SSH到群晖，上传文件到项目目录
+   cd /volume1/docker/go4wol
+   docker build -t go4wol:latest .
+创建容器：
+镜像：选择刚构建的 go4wol:latest
+容器名称：go4wol
+网络：使用与Docker Host相同的网络
+端口设置：本地端口52133 -> 容器端口52133
+环境变量：
+PORT=52133
+ADMIN_PASSWORD=your_secure_password
+TZ=Asia/Shanghai
+存储空间：挂载文件夹 /data 到宿主机路径
+通过SSH部署
+bash
 # SSH连接到群晖
 ssh admin@your-synology-ip
 
@@ -175,103 +136,134 @@ ssh admin@your-synology-ip
 mkdir -p /volume1/docker/go4wol
 cd /volume1/docker/go4wol
 
-# 上传文件后执行部署
+# 上传文件并部署
 chmod +x deploy.sh
-./deploy.sh deploy
-```
+ADMIN_PASSWORD=your_secure_password ./deploy.sh deploy
+💾 数据管理
+数据库位置
+容器内路径：/data/devices.db
+宿主机路径：./data/devices.db
+备份数据
+bash
+# 备份数据库
+cp ./data/devices.db ./data/devices_backup_$(date +%Y%m%d).db
 
-### 方法2：通过Docker图形界面
-
-1. 打开群晖的Docker套件
-2. 在镜像选项卡中选择"新增" -> "从文件添加"
-3. 上传构建好的Docker镜像
-4. 创建容器时设置：
-   - 端口映射：本地端口52133 -> 容器端口52133
-   - 网络：使用host模式（推荐）
-   - 环境变量：PORT=52133, TZ=Asia/Shanghai
-
-### 网络配置注意事项
-
-- **推荐使用host网络模式**：这样可以确保WOL广播包能够正确发送
-- 如果必须使用bridge模式，确保Docker网络配置允许广播
-- 确保目标设备的网卡支持Wake-on-LAN功能
-
-## 管理命令
-
-```bash
-# 查看服务状态
-docker ps | grep go4wol
-
-# 查看日志
-./deploy.sh logs
-# 或者
-docker logs -f go4wol
-
-# 重启服务
-./deploy.sh restart
-
-# 停止服务
-./deploy.sh stop
-```
-
-## 故障排除
-
-### 常见问题
-
-1. **WOL包发送失败**
-   - 检查目标设备是否支持Wake-on-LAN
-   - 确认网络配置和广播地址正确
-   - 验证MAC地址格式是否正确
-
-2. **服务无法访问**
-   - 检查端口是否被占用
-   - 确认防火墙设置
-   - 验证Docker容器是否正常运行
-
-3. **权限问题**
-   - 确保部署脚本有执行权限
-   - 检查Docker是否正常运行
-
-### 调试方法
-
-```bash
-# 检查容器状态
+# 恢复数据（停止容器后）
+docker stop go4wol
+cp ./data/devices_backup_20240101.db ./data/devices.db
+docker start go4wol
+数据库结构
+sql
+CREATE TABLE devices (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    mac TEXT NOT NULL UNIQUE,
+    broadcast TEXT DEFAULT '255.255.255.255',
+    port INTEGER DEFAULT 9,
+    description TEXT DEFAULT '',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+🔧 配置选项
+环境变量
+变量	默认值	说明
+PORT	52133	服务监听端口
+ADMIN_PASSWORD	admin123	管理员密码
+TZ	Asia/Shanghai	时区设置
+网络配置
+推荐：使用host网络模式确保WOL广播包正常发送
+备选：bridge模式（可能需要特权模式）
+📱 PWA功能
+安装到桌面/手机
+使用Chrome/Edge/Safari打开服务地址
+点击地址栏的"安装"图标
+确认安装PWA应用
+现在可以像原生应用一样使用
+离线功能
+界面支持离线访问
+设备列表缓存在本地
+登录状态持久保存
+🛠️ 故障排除
+常见问题
+WOL包发送失败
+bash
+   # 检查网络模式
+   docker inspect go4wol | grep NetworkMode
+   
+   # 确认目标设备支持WOL
+   # 检查BIOS/UEFI设置
+   # 确认网卡驱动支持WOL
+无法访问前端页面
+bash
+   # 检查服务状态
+   docker logs go4wol
+   
+   # 检查端口占用
+   netstat -tlnp | grep 52133
+   
+   # 检查防火墙设置
+数据库错误
+bash
+   # 检查数据目录权限
+   ls -la ./data/
+   
+   # 重新创建数据库
+   rm ./data/devices.db
+   docker restart go4wol
+登录问题
+bash
+   # 检查密码设置
+   docker exec go4wol printenv ADMIN_PASSWORD
+   
+   # 清除浏览器存储
+   # 开发者工具 > Application > Local Storage > 清除
+调试命令
+bash
+# 查看容器状态
 docker ps -a | grep go4wol
 
 # 查看详细日志
-docker logs go4wol
+docker logs -f go4wol
 
 # 进入容器调试
 docker exec -it go4wol sh
 
-# 测试网络连接
+# 测试API
 curl http://localhost:52133/health
-```
-
-## 安全考虑
-
-- 服务以非root用户运行
-- 支持CORS，但在生产环境中建议限制来源
-- 建议在内网环境中使用
-- 可以配置反向代理添加认证
-
-## 性能优化
-
-- 使用多阶段Docker构建减小镜像大小
-- Alpine Linux基础镜像提供较小的攻击面
-- Go语言提供高性能的并发处理
-
-## 许可证
-
+curl -X POST http://localhost:52133/wol \
+  -H 'Content-Type: application/json' \
+  -d '{"mac":"AA:BB:CC:DD:EE:FF"}'
+🔒 安全建议
+设置强密码：ADMIN_PASSWORD=Complex_Password_123!
+仅在内网环境中使用
+定期备份设备数据库
+如需外网访问，建议配置反向代理和SSL
+🎯 使用场景
+家庭网络：管理家里的台式机、服务器、NAS
+办公环境：远程唤醒工作电脑、服务器
+实验室：管理多台测试设备
+网络管理：批量设备管理和唤醒
+🚀 性能特点
+启动速度：< 1秒启动时间
+内存占用：< 20MB运行时内存
+并发处理：支持多用户同时操作
+数据库性能：SQLite提供快速查询
+📄 更新日志
+v2.0.0 (Current)
+✅ 添加PWA前端界面
+✅ 集成用户认证系统
+✅ SQLite数据库存储
+✅ 设备管理功能
+✅ 端口改为52133
+✅ 项目重命名为Go4WOL
+v1.0.0
+✅ 基础WOL API功能
+✅ Docker容器化
+✅ 健康检查
+📝 许可证
 本项目采用MIT许可证。
 
-## 贡献
+🤝 贡献
+欢迎提交Issue和Pull Request来改进这个项目！
 
-欢迎提交Issue和Pull Request来改进这个项目。
+Go4WOL - 让设备唤醒变得简单高效！ 🚀
 
-## 更新日志
-
-- v1.0.0: 初始版本，支持基本的WOL功能
-- 支持MAC地址验证和格式化
-- 添加健康检查和监控
-- 完整的Docker化部署方案

@@ -8,9 +8,9 @@ set -e
 echo "=== WOL服务构建和部署脚本 ==="
 
 # 配置变量
-SERVICE_NAME="wol-service"
-IMAGE_NAME="wol-service:latest"
-CONTAINER_NAME="wol-service"
+SERVICE_NAME="go4wol"
+IMAGE_NAME="go4wol:latest"
+CONTAINER_NAME="go4wol"
 HOST_PORT="52133"
 
 # 颜色输出
@@ -77,6 +77,20 @@ build_image() {
 run_container() {
     log_info "启动容器: ${CONTAINER_NAME}"
     
+    # 创建数据目录并设置权限
+    mkdir -p ./data
+    chmod 755 ./data
+    
+    # 如果在Linux系统上，设置正确的用户权限
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        # 尝试设置与容器内用户相同的权限（UID 1000）
+        if command -v chown >/dev/null 2>&1; then
+            sudo chown -R 1000:1000 ./data 2>/dev/null || {
+                log_warn "无法设置数据目录权限，但这通常不会影响功能"
+            }
+        fi
+    fi
+    
     # 使用host网络模式以便发送广播包
     docker run -d \
         --name ${CONTAINER_NAME} \
@@ -84,7 +98,9 @@ run_container() {
         --network host \
         -p ${HOST_PORT}:52133 \
         -e PORT=52133 \
+        -e ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123} \
         -e TZ=Asia/Shanghai \
+        -v "$(pwd)/data:/data" \
         ${IMAGE_NAME}
     
     if [ $? -eq 0 ]; then
@@ -137,12 +153,15 @@ show_info() {
     echo
     echo "服务地址: http://localhost:${HOST_PORT}"
     echo "健康检查: http://localhost:${HOST_PORT}/health"
-    echo "服务文档: http://localhost:${HOST_PORT}/"
+    echo "PWA前端: http://localhost:${HOST_PORT}/"
     echo
     echo "API使用示例:"
     echo "curl -X POST http://localhost:${HOST_PORT}/wol \\"
     echo "  -H 'Content-Type: application/json' \\"
     echo "  -d '{\"mac\":\"AA:BB:CC:DD:EE:FF\",\"broadcast\":\"192.168.1.255\",\"port\":9}'"
+    echo
+    echo "管理密码: \${ADMIN_PASSWORD:-admin123}"
+    echo "数据目录: $(pwd)/data"
     echo
     echo "查看日志: docker logs -f ${CONTAINER_NAME}"
     echo "停止服务: docker stop ${CONTAINER_NAME}"
