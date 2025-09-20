@@ -18,6 +18,62 @@ Go4WOL - Wake-on-LAN PWA服务
 一键唤醒：点击设备卡片或唤醒按钮
 设备添加：模态框快速添加新设备
 响应式设计：支持手机、平板、桌面
+
+Docker Compose 部署
+```
+version: '3.8'
+
+services:
+  go4wol:
+    build: .
+    container_name: go4wol
+    restart: unless-stopped
+    network_mode: host  # 使用host网络模式，确保能够发送广播包
+    # 注意：使用host网络模式时，ports映射会被忽略
+    ports:
+      - "52133:52133"  # 在host网络模式下这行会被忽略，但保留以备切换到bridge模式
+    environment:
+      - PORT=52133
+      - ADMIN_PASSWORD=your_secure_password  # 请修改为安全的密码
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./data:/data:rw  # 挂载数据目录到宿主机，确保读写权限
+    user: "1000:1000"  # 使用与容器内相同的用户ID
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.go4wol.rule=Host(`go4wol.local`)"
+      - "traefik.http.services.go4wol.loadbalancer.server.port=52133"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    image: kaiyuan/go4wol:labels
+
+# 如果不能使用host网络模式，请使用以下配置
+# services:
+#   go4wol:
+#     build: .
+#     container_name: go4wol
+#     restart: unless-stopped
+#     ports:
+#       - "52133:52133"
+#     environment:
+#       - PORT=52133
+#       - ADMIN_PASSWORD=your_secure_password
+#       - TZ=Asia/Shanghai
+#     volumes:
+#       - ./data:/data
+#     networks:
+#       - go4wol-network
+#     privileged: true  # 可能需要特权模式来发送广播包
+# 
+# networks:
+#   go4wol-network:
+#     driver: bridge
+```
+
 🚀 快速开始
 1. 准备文件
 创建项目目录并保存以下文件：
@@ -109,7 +165,7 @@ docker run -d \
   -e TZ=Asia/Shanghai \
   -v "$(pwd)/data:/data" \
   -p 52133:52133 \
-  go4wol:latest
+  kaiyuan/go4wol:latest
 🏠 群晖NAS部署
 通过Docker套件
 构建镜像：
