@@ -617,33 +617,33 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
     <title>Go4WOL - Wake on LAN</title>
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" type="image/png" href="/icon-192.png">
-    <meta name="theme-color" content="#2196F3">
+    <meta name="theme-color" content="#f5f5f5">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; }
+        body { font-family: "Sarasa Term SC", "Helvetica Neue", Ubuntu, Helvetica, "Source Han Serif", "PingFang SC","Hiragino Sans GB", "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "WenQuanYi Zen Hei", "Apple LiGothic Medium", "ST Heiti", "WenQuanYi Zen Hei Sharp", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; }
         .container { max-width: 800px; margin: 0 auto; padding: 20px; }
-        .header { background: linear-gradient(135deg,rgb(202, 228, 248),rgb(240, 250, 252)); color:rgb(61, 61, 61); padding: 20px; border-radius: 12px; margin-bottom: 20px; text-align: center; }
+        .header { color:rgb(61, 61, 61); padding: 20px; border-radius: 12px; margin-bottom: 20px; text-align: center; }
         .login-form, .main-content { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         div[class*="hidden"], .hidden { display: none; }
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; font-weight: 500; }
         input, select, textarea { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: #2196F3; }
-        .btn { background: #2196F3; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 16px; margin-right: 10px; margin-bottom: 10px; }
-        .btn:hover { background: #1976D2; }
-        .btn-danger { background: #f44336; }
-        .btn-danger:hover { background: #d32f2f; }
-        .btn-success { background: #4CAF50; }
-        .btn-success:hover { background: #45a049; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #605fec; }
+        .btn { background: #605fec; color: white; border: none; padding: 12px 24px; border-radius: 4px; cursor: pointer; font-size: 16px; margin-right: 10px; margin-bottom: 10px; }
+        .btn:hover { background: #5956aa; }
+        .btn-danger { background: #ffdc3a; }
+        .btn-danger:hover { background: #e6bb35; }
+        .btn-success { background: #38d480; }
+        .btn-success:hover { background: #2eae69; }
         .device-list { margin-top: 20px; }
-        .device-item { background: white; border: 2px solid #ddd; border-radius: 12px; padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.3s; }
-        .device-item:hover { border-color: #2196F3; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .device-item { background: white; border: 1px solid #ddd; border-radius: 12px; padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.3s; }
+        .device-item:hover { border-color: #5956aa; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         .device-info h3 { color: #333; margin-bottom: 5px; }
         .device-info p { color: #666; font-size: 14px; }
         .device-actions button { margin-left: 10px; padding: 8px 16px; font-size: 14px; }
         .toast { position: fixed; top: 20px; right: 20px; padding: 15px 20px; border-radius: 8px; color: white; z-index: 1000; }
-        .toast.success { background: #4CAF50; }
-        .toast.error { background: #f44336; }
+        .toast.success { background: #38d480; }
+        .toast.error { background: #e6bb35; }
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 1001; }
         .modal-content { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 500px; }
         .modal-header { margin-bottom: 20px; }
@@ -660,7 +660,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 <body>
     <div class="container">
         <div class="header">
-            <h1>🕹️ Go4WOL</h1>
+            <h1><svg id="uuid-275bee91-c775-492c-8d2c-1c35a846a290" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 289.14 50" width="290px" height="50px"><path d="M26.9,23.31h21.95c-.5,5.45-2.22,14.2-8.11,20.09-5.31,5.31-11.69,6.6-17.43,6.6s-11.69-1.29-16.79-6.24c-3.37-3.23-6.53-8.39-6.53-16.43C0,18.72,3.59,11.76,8.11,7.39,11.98,3.66,18.15,0,27.62,0c3.8,0,8.32.65,12.7,3.37,2.65,1.65,5.24,4.16,7.17,7.46l-8.39,4.81c-1.29-2.37-3.01-4.02-4.81-5.09-2.3-1.43-4.88-2.08-7.75-2.08-5.52,0-9.33,2.3-11.69,4.66-3.3,3.3-5.24,8.54-5.24,13.7,0,5.67,2.44,9.04,4.16,10.76,3.23,3.23,7.17,3.95,10.26,3.95,2.73,0,6.53-.43,9.76-3.23,2.15-1.87,3.66-4.59,4.45-6.96h-12.34l1-8.03Z"/><path d="M85.22,21.31c2.01,2.08,4.02,5.45,4.02,10.33,0,3.95-1.22,8.9-5.52,13.06-4.09,3.87-8.75,5.24-14.28,5.24-4.45,0-8.61-.93-11.98-4.3-2.3-2.22-4.09-5.67-4.09-10.54s2.22-9.9,5.38-12.98c2.51-2.44,6.96-5.24,14.2-5.24,6.1,0,9.9,2.08,12.27,4.45ZM77.11,39.45c1.79-1.79,2.94-4.52,2.94-6.96,0-1.94-.79-4.3-2.3-5.74-1.44-1.36-3.59-2.15-5.67-2.15-2.44,0-4.88.93-6.6,2.51-2.15,2.01-3.08,4.95-3.08,7.39,0,1.87.79,4.09,2.15,5.45,1.44,1.44,3.73,2.22,5.74,2.22,2.37,0,4.95-.86,6.81-2.73Z"/><path d="M125.53,32.42h5.6l-.93,7.46h-5.6l-1.08,9.04h-8.75l1.08-9.04h-23.39l.57-4.16L121.01,1.08h8.39l-3.87,31.35ZM116.78,32.42l2.22-18.51-14.56,18.51h12.34Z"/><path d="M154.15,48.92h-6.6L136.64,1.08h9.76l6.67,32.57L168.85,1.08h5.17l6.96,32.57L196.47,1.08h10.04l-24.03,47.85h-6.6l-6.74-30.34-14.99,30.34Z"/><path d="M252.06,6.17c3.59,3.44,6.31,8.82,6.31,15.93,0,7.6-2.87,15.14-7.68,20.09-3.8,3.95-10.26,7.82-19.94,7.82s-14.78-3.8-17.58-6.67c-3.95-4.02-6.31-9.83-6.31-15.85,0-7.89,3.3-15.28,8.25-19.94,5.02-4.73,12.48-7.53,20.37-7.53,6.82,0,12.77,2.51,16.57,6.17ZM243.02,36.8c3.44-3.37,5.67-8.61,5.67-13.99,0-4.3-1.58-7.82-3.8-10.11-2.08-2.15-5.67-4.16-10.9-4.16s-9.18,2.01-11.91,4.59c-3.66,3.44-5.52,8.46-5.52,13.63s1.94,8.46,3.8,10.4c2.58,2.73,6.46,4.38,10.9,4.38,4.81,0,8.9-1.94,11.77-4.73Z"/><path d="M279.24,1.08l-4.88,39.81h14.78l-1,8.03h-24.1l5.88-47.85h9.33Z"/></svg></h1>
             <p>Wake on LAN Service</p>
         </div>
 
@@ -677,10 +677,10 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
         <!-- 主界面 -->
         <div id="mainContent" class="main-content hidden">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2>设备管理</h2>
+                <h2>🗒️ 设备管理</h2>
                 <div>
-                    <button class="btn" onclick="showAddDeviceModal()">➕ 添加设备</button>
-                    <button class="btn btn-danger" onclick="logout()">🚪 退出登录</button>
+                    <button class="btn" onclick="showAddDeviceModal()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="20px" height="20px" fill="#ffffff"><!--!Font Awesome Free v7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M352 128C352 110.3 337.7 96 320 96C302.3 96 288 110.3 288 128L288 288L128 288C110.3 288 96 302.3 96 320C96 337.7 110.3 352 128 352L288 352L288 512C288 529.7 302.3 544 320 544C337.7 544 352 529.7 352 512L352 352L512 352C529.7 352 544 337.7 544 320C544 302.3 529.7 288 512 288L352 288L352 128z"/></svg></button>
+                    <button class="btn btn-danger" onclick="logout()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="20px" height="20px" fill="#ffffff"><!--!Font Awesome Free v7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M342.6 73.4C330.1 60.9 309.8 60.9 297.3 73.4L169.3 201.4C156.8 213.9 156.8 234.2 169.3 246.7C181.8 259.2 202.1 259.2 214.6 246.7L288 173.3L288 384C288 401.7 302.3 416 320 416C337.7 416 352 401.7 352 384L352 173.3L425.4 246.7C437.9 259.2 458.2 259.2 470.7 246.7C483.2 234.2 483.2 213.9 470.7 201.4L342.7 73.4zM160 416C160 398.3 145.7 384 128 384C110.3 384 96 398.3 96 416L96 480C96 533 139 576 192 576L448 576C501 576 544 533 544 480L544 416C544 398.3 529.7 384 512 384C494.3 384 480 398.3 480 416L480 480C480 497.7 465.7 512 448 512L192 512C174.3 512 160 497.7 160 480L160 416z"/></svg></button>
                 </div>
             </div>
             
@@ -819,7 +819,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
                     
                     const wakeButton = document.createElement('button');
                     wakeButton.className = 'btn btn-success';
-                    wakeButton.textContent = '⚡ 唤醒';
+                    wakeButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="24px" height="24px" fill="#ffffff"><path d="M128 320L156.5 92C158.5 76 172.1 64 188.3 64L356.9 64C371.9 64 384 76.1 384 91.1C384 94.3 383.4 97.6 382.3 100.6L336 224L475.3 224C495.5 224 512 240.4 512 260.7C512 268.1 509.8 275.3 505.6 281.4L313.4 562.4C307.5 571 297.8 576.1 287.5 576.1L284.6 576.1C268.9 576.1 256.1 563.3 256.1 547.6C256.1 545.3 256.4 543 257 540.7L304 352L160 352C142.3 352 128 337.7 128 320z"></path></svg>';
                     wakeButton.addEventListener('click', (e) => {
                         e.stopPropagation();
                         wakeDevice(device.mac, device.broadcast, device.port);
@@ -827,7 +827,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
                     
                     const deleteButton = document.createElement('button');
                     deleteButton.className = 'btn btn-danger';
-                    deleteButton.textContent = '🗑️ 删除';
+                    deleteButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="24px" height="24px" fill="#ffffff"><path d="M232.7 69.9L224 96L128 96C110.3 96 96 110.3 96 128C96 145.7 110.3 160 128 160L512 160C529.7 160 544 145.7 544 128C544 110.3 529.7 96 512 96L416 96L407.3 69.9C402.9 56.8 390.7 48 376.9 48L263.1 48C249.3 48 237.1 56.8 232.7 69.9zM512 208L128 208L149.1 531.1C150.7 556.4 171.7 576 197 576L443 576C468.3 576 489.3 556.4 490.9 531.1L512 208z"/></svg>';
                     deleteButton.addEventListener('click', (e) => {
                         e.stopPropagation();
                         deleteDevice(device.id);
@@ -1002,8 +1002,8 @@ func manifestHandler(w http.ResponseWriter, r *http.Request) {
 		"description": "Wake on LAN Service",
 		"start_url": "/",
 		"display": "standalone",
-		"background_color": "#2196F3",
-		"theme_color": "#2196F3",
+		"background_color": "#f5f5f5",
+		"theme_color": "#f5f5f5",
 		"icons": [
 			{
 				"src": "/icon-192.png",
@@ -1024,7 +1024,7 @@ func manifestHandler(w http.ResponseWriter, r *http.Request) {
 func serviceWorkerHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/javascript")
 	sw := `
-const CACHE_NAME = 'go4wol-v1';
+const CACHE_NAME = 'go4wol-v1.1';
 const urlsToCache = [
 	'/',
 	'/manifest.json'
@@ -1058,14 +1058,7 @@ self.addEventListener('fetch', function(event) {
 // 生成简单的图标（SVG格式）
 func iconHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "image/svg+xml")
-	svg := `<svg width="192" height="192" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
-		<rect width="192" height="192" fill="#2196F3" rx="24"/>
-		<circle cx="96" cy="96" r="60" fill="none" stroke="white" stroke-width="8"/>
-		<circle cx="96" cy="96" r="40" fill="none" stroke="white" stroke-width="6"/>
-		<circle cx="96" cy="96" r="20" fill="none" stroke="white" stroke-width="4"/>
-		<circle cx="96" cy="96" r="8" fill="white"/>
-		<path d="M96 36 L96 20 M156 96 L172 96 M96 156 L96 172 M36 96 L20 96" stroke="white" stroke-width="6" stroke-linecap="round"/>
-	</svg>`
+	svg := `<svg id="go4wollogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192"><defs><style>.st0,.st1{isolation:isolate}.st0,.st2{fill:#fff;opacity:.1}</style><clipPath id="clippath"><path d="M167.94 80.04l-21.18 22.02c-4.52 20.5-20.28 36.79-40.48 42.08L85.1 166.15c2.29.21 4.61.31 6.96.31 42.26 0 76.53-34.26 76.53-76.53 0-3.35-.22-6.65-.64-9.89zM58.76 134.99a56.382 56.382 0 0 1-14.45-15.74l-14.71.04 8.05-15.92c-1.06-4.31-1.63-8.8-1.63-13.44 0-23.36 14.3-43.38 34.62-51.79l12.24-24.19c-37.93 4.52-67.35 36.81-67.35 75.98 0 26.63 13.6 50.08 34.24 63.79l9-18.73zm79.16-77.24c2.12 3.02 3.95 6.26 5.45 9.67l21.78-.19a76.447 76.447 0 0 0-16.49-28.79l-10.74 19.32zm-24.57 19.48L152.53.83h-47.35L48.19 111.96h38.76l-39.18 76.41L152.11 77.23h-38.76z" fill="none"/></clipPath></defs><g id="sh" class="st1"><path d="M142.52 61.35c2.12 3.02 3.95 6.26 5.45 9.67l21.78-.19a76.447 76.447 0 0 0-16.49-28.79l-10.74 19.32zm-79.16 77.24a56.382 56.382 0 0 1-14.45-15.74l-14.71.04 8.05-15.92c-1.06-4.31-1.63-8.8-1.63-13.44 0-23.36 14.3-43.38 34.62-51.79l12.24-24.19c-37.93 4.52-67.35 36.81-67.35 75.98 0 26.63 13.6 50.08 34.24 63.79l9-18.73zm109.18-54.95l-21.18 22.02c-4.52 20.5-20.28 36.79-40.48 42.08L89.7 169.75c2.29.21 4.61.31 6.96.31 42.26 0 76.53-34.26 76.53-76.53 0-3.35-.22-6.65-.64-9.89zm-54.59-2.81l39.18-76.4h-47.35L52.79 115.56h38.76l-39.18 76.41L156.71 80.83h-38.76z" fill="#273263" id="logo_bg"/></g><g clip-path="url(#clippath)" id="logo"><path fill="#6a86ff" d="M0 .83h192v191.14H0z"/><path class="st2" d="M155.07 46.63l-15.4 16-3.56-5.33 12.3-20.89 6.66 10.22zM151.53 5.67L155.22 0h-51.78L46.11 112.78h10.45L111.67 9.67l39.86-4zM114.11 75.67l-2.89 5.77H149l5.33-4.88-40.22-.89zM30.56 116.78l-2.45 6.46 20.8-.39-3.02-6.07H30.56zM79.22 113.67l32-24.45L47.77 192 43 189.44l36.22-75.77zM167.94 80.03l-17.61 25.63s-5.78 31.33-41.56 43.11l-21.29 25.56-6.05-7.88 83.71-88.57 2.79 2.15z"/><path class="st0" d="M82.89 13.95l-3 6.16s-66.89 12.22-55.11 98l-1.39 8.73s-48.83-98.83 59.5-112.89z"/></g></svg>`
 	fmt.Fprint(w, svg)
 }
 

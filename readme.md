@@ -1,25 +1,28 @@
-Go4WOL - Wake-on-LAN PWA服务
+![](data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGlkPSJ1dWlkLTI3NWJlZTkxLWM3NzUtNDkyYy04ZDJjLTFjMzVhODQ2YTI5MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMjg5LjE0IDUwIiB3aWR0aD0iMjkwcHgiIGhlaWdodD0iNTBweCI+PHBhdGggZD0iTTI2LjksMjMuMzFoMjEuOTVjLS41LDUuNDUtMi4yMiwxNC4yLTguMTEsMjAuMDktNS4zMSw1LjMxLTExLjY5LDYuNi0xNy40Myw2LjZzLTExLjY5LTEuMjktMTYuNzktNi4yNGMtMy4zNy0zLjIzLTYuNTMtOC4zOS02LjUzLTE2LjQzQzAsMTguNzIsMy41OSwxMS43Niw4LjExLDcuMzksMTEuOTgsMy42NiwxOC4xNSwwLDI3LjYyLDBjMy44LDAsOC4zMi42NSwxMi43LDMuMzcsMi42NSwxLjY1LDUuMjQsNC4xNiw3LjE3LDcuNDZsLTguMzksNC44MWMtMS4yOS0yLjM3LTMuMDEtNC4wMi00LjgxLTUuMDktMi4zLTEuNDMtNC44OC0yLjA4LTcuNzUtMi4wOC01LjUyLDAtOS4zMywyLjMtMTEuNjksNC42Ni0zLjMsMy4zLTUuMjQsOC41NC01LjI0LDEzLjcsMCw1LjY3LDIuNDQsOS4wNCw0LjE2LDEwLjc2LDMuMjMsMy4yMyw3LjE3LDMuOTUsMTAuMjYsMy45NSwyLjczLDAsNi41My0uNDMsOS43Ni0zLjIzLDIuMTUtMS44NywzLjY2LTQuNTksNC40NS02Ljk2aC0xMi4zNGwxLTguMDNaIi8+PHBhdGggZD0iTTg1LjIyLDIxLjMxYzIuMDEsMi4wOCw0LjAyLDUuNDUsNC4wMiwxMC4zMywwLDMuOTUtMS4yMiw4LjktNS41MiwxMy4wNi00LjA5LDMuODctOC43NSw1LjI0LTE0LjI4LDUuMjQtNC40NSwwLTguNjEtLjkzLTExLjk4LTQuMy0yLjMtMi4yMi00LjA5LTUuNjctNC4wOS0xMC41NHMyLjIyLTkuOSw1LjM4LTEyLjk4YzIuNTEtMi40NCw2Ljk2LTUuMjQsMTQuMi01LjI0LDYuMSwwLDkuOSwyLjA4LDEyLjI3LDQuNDVaTTc3LjExLDM5LjQ1YzEuNzktMS43OSwyLjk0LTQuNTIsMi45NC02Ljk2LDAtMS45NC0uNzktNC4zLTIuMy01Ljc0LTEuNDQtMS4zNi0zLjU5LTIuMTUtNS42Ny0yLjE1LTIuNDQsMC00Ljg4LjkzLTYuNiwyLjUxLTIuMTUsMi4wMS0zLjA4LDQuOTUtMy4wOCw3LjM5LDAsMS44Ny43OSw0LjA5LDIuMTUsNS40NSwxLjQ0LDEuNDQsMy43MywyLjIyLDUuNzQsMi4yMiwyLjM3LDAsNC45NS0uODYsNi44MS0yLjczWiIvPjxwYXRoIGQ9Ik0xMjUuNTMsMzIuNDJoNS42bC0uOTMsNy40NmgtNS42bC0xLjA4LDkuMDRoLTguNzVsMS4wOC05LjA0aC0yMy4zOWwuNTctNC4xNkwxMjEuMDEsMS4wOGg4LjM5bC0zLjg3LDMxLjM1Wk0xMTYuNzgsMzIuNDJsMi4yMi0xOC41MS0xNC41NiwxOC41MWgxMi4zNFoiLz48cGF0aCBkPSJNMTU0LjE1LDQ4LjkyaC02LjZMMTM2LjY0LDEuMDhoOS43Nmw2LjY3LDMyLjU3TDE2OC44NSwxLjA4aDUuMTdsNi45NiwzMi41N0wxOTYuNDcsMS4wOGgxMC4wNGwtMjQuMDMsNDcuODVoLTYuNmwtNi43NC0zMC4zNC0xNC45OSwzMC4zNFoiLz48cGF0aCBkPSJNMjUyLjA2LDYuMTdjMy41OSwzLjQ0LDYuMzEsOC44Miw2LjMxLDE1LjkzLDAsNy42LTIuODcsMTUuMTQtNy42OCwyMC4wOS0zLjgsMy45NS0xMC4yNiw3LjgyLTE5Ljk0LDcuODJzLTE0Ljc4LTMuOC0xNy41OC02LjY3Yy0zLjk1LTQuMDItNi4zMS05LjgzLTYuMzEtMTUuODUsMC03Ljg5LDMuMy0xNS4yOCw4LjI1LTE5Ljk0LDUuMDItNC43MywxMi40OC03LjUzLDIwLjM3LTcuNTMsNi44MiwwLDEyLjc3LDIuNTEsMTYuNTcsNi4xN1pNMjQzLjAyLDM2LjhjMy40NC0zLjM3LDUuNjctOC42MSw1LjY3LTEzLjk5LDAtNC4zLTEuNTgtNy44Mi0zLjgtMTAuMTEtMi4wOC0yLjE1LTUuNjctNC4xNi0xMC45LTQuMTZzLTkuMTgsMi4wMS0xMS45MSw0LjU5Yy0zLjY2LDMuNDQtNS41Miw4LjQ2LTUuNTIsMTMuNjNzMS45NCw4LjQ2LDMuOCwxMC40YzIuNTgsMi43Myw2LjQ2LDQuMzgsMTAuOSw0LjM4LDQuODEsMCw4LjktMS45NCwxMS43Ny00LjczWiIvPjxwYXRoIGQ9Ik0yNzkuMjQsMS4wOGwtNC44OCwzOS44MWgxNC43OGwtMSw4LjAzaC0yNC4xbDUuODgtNDcuODVoOS4zM1oiLz48L3N2Zz4=)
+
+Wake-on-LAN 
+
 一个功能强大的Wake-on-LAN服务，带有现代化的PWA前端界面，专为群晖NAS的Docker环境设计。
 
-✨ 功能特点
-🚀 高性能Go语言实现 - 快速稳定的后端服务
-📱 PWA前端界面 - 支持离线使用，可安装到桌面/手机
-🔐 密码认证保护 - 登录状态永久保存在设备
-💾 SQLite数据库 - 持久化存储设备信息
-🖥️ 设备管理 - 添加、删除、管理多个设备
-🌐 一键唤醒 - 点击设备即可快速发送WOL包
-🐳 Docker容器化 - 简单易部署
-🛡️ 安全设计 - 非root用户运行
-📊 健康监控 - 内置健康检查
-🌏 CORS支持 - 便于前端集成
-🎯 界面预览
-登录界面：密码保护，一次登录长期有效
-设备管理：直观的设备卡片展示
-一键唤醒：点击设备卡片或唤醒按钮
-设备添加：模态框快速添加新设备
-响应式设计：支持手机、平板、桌面
+- ✨ 功能特点
+- 🚀 高性能Go语言实现 - 快速稳定的后端服务
+- 📱 PWA前端界面 - 支持离线使用，可安装到桌面/手机
+- 🔐 密码认证保护 - 登录状态永久保存在设备
+- 💾 SQLite数据库 - 持久化存储设备信息
+- 🖥️ 设备管理 - 添加、删除、管理多个设备
+- 🌐 一键唤醒 - 点击设备即可快速发送WOL包
+- 🐳 Docker容器化 - 简单易部署
+- 🛡️ 安全设计 - 非root用户运行
+- 📊 健康监控 - 内置健康检查
+- 🌏 CORS支持 - 便于前端集成
+- 🎯 界面预览
+- 登录界面：密码保护，一次登录长期有效
+- 设备管理：直观的设备卡片展示
+- 一键唤醒：点击设备卡片或唤醒按钮
+- 设备添加：模态框快速添加新设备
+- 响应式设计：支持手机、平板、桌面
 
-Docker Compose 部署
+### Docker Compose 部署
 ```
 version: '3.8'
 
@@ -49,7 +52,7 @@ services:
         max-size: "10m"
         max-file: "3"
 
-    image: kaiyuan/go4wol:latest
+    image: kaiyuan/go4wol:labels
 
 # 如果不能使用host网络模式，请使用以下配置
 # services:
@@ -74,53 +77,60 @@ services:
 #     driver: bridge
 ```
 
-🚀 快速开始
+## 🚀 快速开始
 1. 准备文件
 创建项目目录并保存以下文件：
 
-bash
+```bash
 mkdir go4wol && cd go4wol
 # 保存 main.go, Dockerfile, docker-compose.yml, deploy.sh
+```
 2. 设置管理密码
-bash
+```bash
 # 设置环境变量（推荐）
 export ADMIN_PASSWORD="your_secure_password"
 
 # 或者修改 docker-compose.yml 中的密码
+```
 3. 一键部署
-bash
+```bash
 # 给部署脚本添加执行权限
 chmod +x deploy.sh
 
 # 构建并部署服务
 ./deploy.sh deploy
+```
 4. 访问服务
 打开浏览器访问：http://your-server-ip:52133
 
-📋 API接口
-原有WOL API（保持不变）
-发送WOL包： POST /wol
-
+## 📋 API接口
+- 原有WOL API（保持不变）
+- 发送WOL包： `POST /wol`
+```
 json
 {
     "mac": "AA:BB:CC:DD:EE:FF",
     "broadcast": "192.168.1.255",
     "port": 9
 }
+```
 新增管理API
-用户登录： POST /api/login
 
-json
+用户登录： `POST /api/login`
+
+```json
 {
     "password": "your_password"
 }
-获取设备列表： GET /api/devices
+```
+获取设备列表： `GET /api/devices`
 
-bash
+```bash
 curl -H "Authorization: Bearer your_token" http://localhost:52133/api/devices
-添加设备： POST /api/devices
+```
+添加设备： `POST /api/devices`
 
-json
+```json
 {
     "name": "办公电脑",
     "mac": "AA:BB:CC:DD:EE:FF",
@@ -128,11 +138,14 @@ json
     "port": 9,
     "description": "我的办公电脑"
 }
-删除设备： DELETE /api/devices?id=1
+```
+删除设备： `DELETE /api/devices?id=1`
 
-🐳 部署方式
+## 🐳 部署方式
+
 方式1：Docker Compose（推荐）
-bash
+
+```bash
 # 修改 docker-compose.yml 中的密码
 ADMIN_PASSWORD=your_secure_password
 
@@ -141,8 +154,10 @@ docker-compose up -d
 
 # 查看日志
 docker-compose logs -f go4wol
+```
 方式2：部署脚本
-bash
+
+```bash
 # 设置密码并部署
 ADMIN_PASSWORD=your_secure_password ./deploy.sh deploy
 
@@ -150,8 +165,9 @@ ADMIN_PASSWORD=your_secure_password ./deploy.sh deploy
 ./deploy.sh stop     # 停止服务
 ./deploy.sh restart  # 重启服务
 ./deploy.sh logs     # 查看日志
+```
 方式3：手动Docker命令
-bash
+```bash
 # 创建数据目录
 mkdir -p ./data
 
@@ -166,25 +182,37 @@ docker run -d \
   -v "$(pwd)/data:/data" \
   -p 52133:52133 \
   kaiyuan/go4wol:latest
-🏠 群晖NAS部署
+```
+## 🏠 群晖NAS部署
+
 通过Docker套件
+
 构建镜像：
-bash
+```bash
    # SSH到群晖，上传文件到项目目录
    cd /volume1/docker/go4wol
    docker build -t go4wol:latest .
+```
 创建容器：
-镜像：选择刚构建的 go4wol:latest
-容器名称：go4wol
+
+镜像：选择刚构建的 `go4wol:latest`
+
+容器名称：`go4wol`
+
 网络：使用与Docker Host相同的网络
+
 端口设置：本地端口52133 -> 容器端口52133
+
 环境变量：
+```
 PORT=52133
 ADMIN_PASSWORD=your_secure_password
 TZ=Asia/Shanghai
-存储空间：挂载文件夹 /data 到宿主机路径
+```
+存储空间：挂载文件夹 `/data` 到宿主机路径
+
 通过SSH部署
-bash
+```bash
 # SSH连接到群晖
 ssh admin@your-synology-ip
 
@@ -195,12 +223,18 @@ cd /volume1/docker/go4wol
 # 上传文件并部署
 chmod +x deploy.sh
 ADMIN_PASSWORD=your_secure_password ./deploy.sh deploy
-💾 数据管理
-数据库位置
-容器内路径：/data/devices.db
-宿主机路径：./data/devices.db
-备份数据
-bash
+```
+## 💾 数据管理
+
+### 数据库位置
+
+容器内路径：`/data/devices.db`
+
+宿主机路径：`./data/devices.db`
+
+### 备份数据
+
+```bash
 # 备份数据库
 cp ./data/devices.db ./data/devices_backup_$(date +%Y%m%d).db
 
@@ -219,37 +253,52 @@ CREATE TABLE devices (
     description TEXT DEFAULT '',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
-🔧 配置选项
-环境变量
-变量	默认值	说明
-PORT	52133	服务监听端口
-ADMIN_PASSWORD	admin123	管理员密码
-TZ	Asia/Shanghai	时区设置
-网络配置
-推荐：使用host网络模式确保WOL广播包正常发送
-备选：bridge模式（可能需要特权模式）
-📱 PWA功能
-安装到桌面/手机
-使用Chrome/Edge/Safari打开服务地址
-点击地址栏的"安装"图标
-确认安装PWA应用
-现在可以像原生应用一样使用
-离线功能
-界面支持离线访问
-设备列表缓存在本地
-登录状态持久保存
-🛠️ 故障排除
-常见问题
+```
+
+## 🔧 配置选项
+
+### 环境变量
+
+|变量|默认值|说明|
+|:---:|:---:|:---:|
+|PORT|52133|服务监听端口|
+|ADMIN_PASSWORD|admin123|管理员密码|
+|TZ|Asia/Shanghai|时区设置|
+
+### 网络配置
+
+- 推荐：使用host网络模式确保WOL广播包正常发送
+- 备选：bridge模式（可能需要特权模式）
+
+### 📱 PWA功能
+
+- 安装到桌面/手机
+- 使用Chrome/Edge/Safari打开服务地址
+- 点击地址栏的"安装"图标
+- 确认安装PWA应用
+- 现在可以像原生应用一样使用
+
+### 离线功能
+
+- 界面支持离线访问
+- 设备列表缓存在本地
+- 登录状态持久保存
+
+## 🛠️ 故障排除
+
+### 常见问题
+
 WOL包发送失败
-bash
+```bash
    # 检查网络模式
    docker inspect go4wol | grep NetworkMode
    
    # 确认目标设备支持WOL
    # 检查BIOS/UEFI设置
    # 确认网卡驱动支持WOL
+```
 无法访问前端页面
-bash
+```bash
    # 检查服务状态
    docker logs go4wol
    
@@ -257,23 +306,26 @@ bash
    netstat -tlnp | grep 52133
    
    # 检查防火墙设置
+```
 数据库错误
-bash
+```bash
    # 检查数据目录权限
    ls -la ./data/
    
    # 重新创建数据库
    rm ./data/devices.db
    docker restart go4wol
+```
 登录问题
-bash
+```bash
    # 检查密码设置
    docker exec go4wol printenv ADMIN_PASSWORD
    
    # 清除浏览器存储
    # 开发者工具 > Application > Local Storage > 清除
-调试命令
-bash
+```  
+### 调试命令
+```bash
 # 查看容器状态
 docker ps -a | grep go4wol
 
@@ -282,43 +334,54 @@ docker logs -f go4wol
 
 # 进入容器调试
 docker exec -it go4wol sh
+```
 
-# 测试API
+## 测试API
+```
 curl http://localhost:52133/health
 curl -X POST http://localhost:52133/wol \
   -H 'Content-Type: application/json' \
   -d '{"mac":"AA:BB:CC:DD:EE:FF"}'
-🔒 安全建议
-设置强密码：ADMIN_PASSWORD=Complex_Password_123!
-仅在内网环境中使用
-定期备份设备数据库
-如需外网访问，建议配置反向代理和SSL
-🎯 使用场景
-家庭网络：管理家里的台式机、服务器、NAS
-办公环境：远程唤醒工作电脑、服务器
-实验室：管理多台测试设备
-网络管理：批量设备管理和唤醒
-🚀 性能特点
-启动速度：< 1秒启动时间
-内存占用：< 20MB运行时内存
-并发处理：支持多用户同时操作
-数据库性能：SQLite提供快速查询
+
+```
+### 🔒 安全建议
+- 设置强密码：ADMIN_PASSWORD=Complex_Password_123!
+- 仅在内网环境中使用
+- 定期备份设备数据库
+- 如需外网访问，建议配置反向代理和SSL
+
+### 🎯 使用场景
+- 家庭网络：管理家里的台式机、服务器、NAS
+- 办公环境：远程唤醒工作电脑、服务器
+- 实验室：管理多台测试设备
+- 网络管理：批量设备管理和唤醒
+
+### 🚀 性能特点
+- 启动速度：< 1秒启动时间
+- 内存占用：< 20MB运行时内存
+- 并发处理：支持多用户同时操作
+- 数据库性能：SQLite提供快速查询
 📄 更新日志
-v2.0.0 (Current)
-✅ 添加PWA前端界面
-✅ 集成用户认证系统
-✅ SQLite数据库存储
-✅ 设备管理功能
-✅ 端口改为52133
-✅ 项目重命名为Go4WOL
-v1.0.0
-✅ 基础WOL API功能
-✅ Docker容器化
-✅ 健康检查
-📝 许可证
+
+### v2.0.0 (Current)
+- ✅ 添加PWA前端界面
+- ✅ 集成用户认证系统
+- ✅ SQLite数据库存储
+- ✅ 设备管理功能
+- ✅ 端口改为52133
+- ✅ 项目重命名为Go4WOL
+
+### v1.0.0
+- ✅ 基础WOL API功能
+- ✅ Docker容器化
+- ✅ 健康检查
+
+## 📝 许可证
+
 本项目采用MIT许可证。
 
-🤝 贡献
+## 🤝 贡献
+
 欢迎提交Issue和Pull Request来改进这个项目！
 
 Go4WOL - 让设备唤醒变得简单高效！ 🚀
