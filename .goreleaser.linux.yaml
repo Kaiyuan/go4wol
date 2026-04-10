@@ -1,4 +1,4 @@
-# .goreleaser.yaml
+# .goreleaser.linux.yaml
 version: 2
 
 project_name: go4wol
@@ -35,15 +35,6 @@ builds:
       - arm
     goarm:
       - 7
-
-  - id: macos
-    env:
-      - CGO_ENABLED=1
-    goos:
-      - darwin
-    goarch:
-      - amd64
-      - arm64
 
   - id: windows
     env:

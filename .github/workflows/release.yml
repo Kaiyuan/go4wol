@@ -38,7 +38,7 @@ jobs:
         with:
           distribution: goreleaser
           version: latest
-          args: release --clean --id default --id linux_arm64 --id linux_armv7 --id windows
+          args: release --clean -f .goreleaser.linux.yaml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -48,7 +48,7 @@ jobs:
         with:
           distribution: goreleaser
           version: latest
-          args: release --clean --id macos
+          args: release --clean -f .goreleaser.macos.yaml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
