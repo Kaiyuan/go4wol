@@ -54,7 +54,7 @@ services:
         max-size: "10m"
         max-file: "3"
 
-    image: kaiyuan/go4wol:labels
+    image: kaiyuan/go4wolv:latest
 
 # 如果不能使用host网络模式，请使用以下配置
 # services:
@@ -80,6 +80,15 @@ services:
 ```
 
 ## 🚀 快速开始
+
+### 方式 1：一键安装脚本（推荐）
+在 Linux (Ubuntu/Debian) 系统中，运行以下命令即可完成安装并配置为系统服务：
+
+```bash
+curl -sSL https://raw.githubusercontent.com/Kaiyuan/go4wol/main/install.sh | sudo bash
+```
+
+### 方式 2：Docker Compose 部署
 1. 准备文件
 创建项目目录并保存以下文件：
 
@@ -183,7 +192,7 @@ docker run -d \
   -e TZ=Asia/Shanghai \
   -v "$(pwd)/data:/data" \
   -p 52133:52133 \
-  kaiyuan/go4wol:latest
+  kaiyuan/go4wolv:latest
 ```
 ## 🏠 群晖NAS部署
 
