@@ -12,7 +12,9 @@ WORKDIR /app
 COPY *.go ./
 
 # 设置Go环境变量和代理
-ENV CGO_ENABLED=1 GOOS=linux GOARCH=amd64
+ARG TARGETOS
+ARG TARGETARCH
+ENV CGO_ENABLED=1 GOOS=${TARGETOS} GOARCH=${TARGETARCH}
 ENV GOPROXY=https://goproxy.cn,direct
 ENV GOSUMDB=sum.golang.google.cn
 
