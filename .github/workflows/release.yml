@@ -10,7 +10,10 @@ permissions:
 
 jobs:
   goreleaser:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -23,17 +26,29 @@ jobs:
           go-version: '1.21'
           cache: true
 
-      - name: Install CGO dependencies
+      - name: Install Linux CGO dependencies
+        if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt-get update
           sudo apt-get install -y gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf libsqlite3-dev
 
-      - name: Run GoReleaser
+      - name: Run GoReleaser (Linux/Windows)
+        if: matrix.os == 'ubuntu-latest'
         uses: goreleaser/goreleaser-action@v6
         with:
           distribution: goreleaser
           version: latest
-          args: release --clean
+          args: release --clean --id default --id linux_arm64 --id linux_armv7 --id windows
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run GoReleaser (macOS)
+        if: matrix.os == 'macos-latest'
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: latest
+          args: release --clean --id macos
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

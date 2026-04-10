@@ -35,9 +35,23 @@ builds:
       - arm
     goarm:
       - 7
-    # 注意：sqlite3 需要 CGO。在 goreleaser 中编译多平台 CGO 可能需要交叉编译链。
-    # 如果环境不支持多平台 CGO 编译，goreleaser 可能会报错。
-    # 这里我们主要面向 Linux 提供多架构二进制。
+
+  - id: macos
+    env:
+      - CGO_ENABLED=1
+    goos:
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+
+  - id: windows
+    env:
+      - CGO_ENABLED=1
+    goos:
+      - windows
+    goarch:
+      - amd64
 
 archives:
   - format: tar.gz
