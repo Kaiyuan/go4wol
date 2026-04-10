@@ -77,5 +77,5 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            kaiyuan/go4wolv:latest
-            kaiyuan/go4wolv:${{ github.ref_name }}
+            kaiyuan/go4wol:latest
+            kaiyuan/go4wol:${{ github.ref_name }}

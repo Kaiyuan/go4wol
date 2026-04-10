@@ -54,7 +54,7 @@ services:
         max-size: "10m"
         max-file: "3"
 
-    image: kaiyuan/go4wolv:latest
+    image: kaiyuan/go4wol:latest
 
 # 如果不能使用host网络模式，请使用以下配置
 # services:
@@ -192,7 +192,7 @@ docker run -d \
   -e TZ=Asia/Shanghai \
   -v "$(pwd)/data:/data" \
   -p 52133:52133 \
-  kaiyuan/go4wolv:latest
+  kaiyuan/go4wol:latest
 ```
 ## 🏠 群晖NAS部署
 
