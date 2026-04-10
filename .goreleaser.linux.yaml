@@ -39,17 +39,18 @@ builds:
   - id: windows
     env:
       - CGO_ENABLED=1
+      - CC=x86_64-w64-mingw32-gcc
     goos:
       - windows
     goarch:
       - amd64
 
 archives:
-  - format: tar.gz
+  - formats: [tar.gz]
     # 为 windows 创建 zip 存档
-    format_overrides:
+    overrides:
       - goos: windows
-        format: zip
+        formats: [zip]
     name_template: >-
       {{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}
 
@@ -57,7 +58,7 @@ checksum:
   name_template: 'checksums.txt'
 
 snapshot:
-  name_template: "{{ incpatch .Version }}-next"
+  version_template: "{{ incpatch .Version }}-next"
 
 changelog:
   sort: asc
