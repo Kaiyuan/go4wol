@@ -48,7 +48,7 @@ builds:
 archives:
   - formats: [tar.gz]
     # 为 windows 创建 zip 存档
-    overrides:
+    format_overrides:
       - goos: windows
         formats: [zip]
     name_template: >-
