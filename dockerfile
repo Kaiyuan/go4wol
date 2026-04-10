@@ -9,7 +9,7 @@ RUN apk add --no-cache gcc musl-dev sqlite-dev
 WORKDIR /app
 
 # 复制Go源代码文件
-COPY main.go .
+COPY *.go ./
 
 # 设置Go环境变量和代理
 ENV CGO_ENABLED=1 GOOS=linux GOARCH=amd64
@@ -20,7 +20,7 @@ ENV GOSUMDB=sum.golang.google.cn
 RUN go mod init go4wol && \
     go get github.com/mattn/go-sqlite3@v1.14.22 && \
     go mod tidy && \
-    go build -a -o go4wol main.go
+    go build -a -o go4wol .
 
 # 阶段2：运行阶段
 FROM alpine:latest
