@@ -71,4 +71,3 @@ release:
   github:
     owner: Kaiyuan
     name: go4wol
-    mode: replace
